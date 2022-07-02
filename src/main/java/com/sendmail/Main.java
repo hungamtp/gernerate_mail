@@ -101,7 +101,7 @@ public class Main {
         return customers;
     }
 
-    public static List<String[]> readAll(Reader reader) throws Exception {
+    private static List<String[]> readAll(Reader reader) throws Exception {
         CSVReader csvReader = new CSVReader(reader);
         List<String[]> list = new ArrayList<>();
         list = csvReader.readAll();
