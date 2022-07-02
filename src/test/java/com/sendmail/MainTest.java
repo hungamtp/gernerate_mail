@@ -17,7 +17,8 @@ public class MainTest extends TestCase {
     private final static String OUTPUT_FOLDER = "src/test/output";
     private final static String ERROR_FILE = "src/test/errors/errors.csv";
 
-    private final static String TEMPLATE_FILE_WRONG = "src/test/input/email_template_wrong.json.json";
+    private final static String TEMPLATE_FILE_WRONG = "src/test/input/email_template_wrong_path.json";
+    private final static String TEMPLATE_FILE_WRONG_FORMAT = "src/test/input/email_template_wrong.json";
 
     @Test
     public void testGenerateEmailSuccess() throws IOException, ParseException {
@@ -60,14 +61,19 @@ public class MainTest extends TestCase {
         return list;
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test
     public void testGenerateEmailWrongInputFile() throws IOException, ParseException {
+        try {
             File templateFile = new File(TEMPLATE_FILE_WRONG);
             File customerFile = new File(CUSTOMER_FILE);
             File outputFolder = new File(OUTPUT_FOLDER);
             File errorFile = new File(ERROR_FILE);
             generateEmail(outputFolder, errorFile, customerFile, templateFile);
+        }catch (FileNotFoundException e){
+            assertTrue(e.getMessage().contains(String.format("%s (No such file or directory)" , TEMPLATE_FILE_WRONG)));
+        }
     }
+
 
 
 }
