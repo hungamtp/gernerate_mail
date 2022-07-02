@@ -9,15 +9,18 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sendmail.Main.generateEmail;
+import static com.sendmail.Main.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class MainTest extends TestCase {
+public class MainTest {
     private final static String TEMPLATE_FILE = "src/test/input/email_template.json";
     private final static String CUSTOMER_FILE = "src/test/input/customers.csv";
     private final static String OUTPUT_FOLDER = "src/test/output";
     private final static String ERROR_FILE = "src/test/errors/errors.csv";
 
     private final static String TEMPLATE_FILE_WRONG = "src/test/input/email_template_wrong_path.json";
+    private final static String CUSTOMER_FILE_WRONG = "src/test/input/customers_wrong.csv";
     private final static String TEMPLATE_FILE_WRONG_FORMAT = "src/test/input/email_template_wrong.json";
 
     @Test
@@ -62,16 +65,30 @@ public class MainTest extends TestCase {
     }
 
     @Test
-    public void testGenerateEmailWrongInputFile() throws IOException, ParseException {
-        try {
-            File templateFile = new File(TEMPLATE_FILE_WRONG);
-            File customerFile = new File(CUSTOMER_FILE);
-            File outputFolder = new File(OUTPUT_FOLDER);
-            File errorFile = new File(ERROR_FILE);
-            generateEmail(outputFolder, errorFile, customerFile, templateFile);
-        }catch (FileNotFoundException e){
-            assertTrue(e.getMessage().contains(String.format("%s (No such file or directory)" , TEMPLATE_FILE_WRONG)));
-        }
+    public void testValidateFileSuccess() throws Exception {
+            File templateFile = validateFileName(TEMPLATE_FILE , "json");
+            assertTrue(templateFile.exists());
+            File customerFile = validateFileName(CUSTOMER_FILE , "csv");
+            assertTrue(customerFile.exists());
+            File errorsFile = validateFileName(ERROR_FILE , "csv");
+            assertTrue(errorsFile.exists());
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void testGenerateEmailWrongCustomerFile() throws Exception {
+        validateFileName(TEMPLATE_FILE_WRONG , "json");
+    }
+
+    @Test
+    public void testGetCustomerSuccess() throws Exception {
+        File customerFile = validateFileName(CUSTOMER_FILE , "csv");
+        assertTrue(customerFile.exists());
+        List<Customer> customers = getAllCustomers(customerFile);
+        long validCustomer = customers.stream().filter(customer -> customer.getHasMail()).count();
+        long invalidCustomer = customers.stream().filter(customer -> !customer.getHasMail()).count();
+        assertEquals(customers.size() , 9);
+        assertEquals(validCustomer , 5);
+        assertEquals(invalidCustomer , 4);
     }
 
 

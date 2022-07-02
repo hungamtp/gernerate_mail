@@ -39,7 +39,7 @@ public class Main {
         }
     }
 
-    private static File validateFileName(String fileName , String extension) throws Exception {
+    public static File validateFileName(String fileName , String extension) throws Exception {
         File file = new File(fileName);
         if (!file.exists()) {
             throw new FileNotFoundException(String.format("%s not found.", fileName));
@@ -58,7 +58,7 @@ public class Main {
         return file;
     }
 
-    private static Template readTemplate(File file) throws IOException, ParseException {
+    public static Template readTemplate(File file) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader reader = new FileReader(file)) {
@@ -75,12 +75,12 @@ public class Main {
 
     }
 
-    private static Template convertJsonToTemplate(JSONObject templateJson) {
+    public static Template convertJsonToTemplate(JSONObject templateJson) {
         return new Template(templateJson.get(TemplateColumn.FROM).toString(), templateJson.get(TemplateColumn.SUBJECT).toString()
             , templateJson.get(TemplateColumn.MINE_TYPE).toString(), templateJson.get(TemplateColumn.BODY).toString());
     }
 
-    private static List<Customer> getAllCustomers(File file) {
+    public static List<Customer> getAllCustomers(File file) {
         List<Customer> customers = new ArrayList<>();
         try {
             Reader reader = new FileReader(file);
