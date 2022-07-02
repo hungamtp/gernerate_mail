@@ -9,10 +9,10 @@ public class MainTest extends TestCase {
 
     @Test
     public void testSuccess(){
-        File templateFile = new File("");
-        File customerFile = new File("");
-        File outputFolder = new File("");
-        File errorFile = new File("");
+        File templateFile = new File("src/test/input/email_template.json");
+        File customerFile = new File("src/test/input/customers.csv");
+        File outputFolder = new File("src/test/output");
+        File errorFile = new File("src/test/errors/errors.csv");
         assertEquals(1 , 1);
     }
 

@@ -145,11 +145,8 @@ public class Main {
         }
 
         if (invalidCustomer.size() > 0) {
-            FileWriter errorFileWriter = new FileWriter(errorFile);
-
+            FileWriter errorFileWriter = new FileWriter(errorFile , true);
             CSVWriter writer = new CSVWriter(errorFileWriter);
-            String[] header = {"TTTLE", "FTRST_NAME", "LAST_NAME", "EMATL"};
-            writer.writeNext(header);
             for (var customer : invalidCustomer) {
                 writer.writeNext(new String[]{customer.getTitle(), customer.getFirstname(), customer.getLastname()});
             }
