@@ -65,10 +65,6 @@ public class Main {
             Object obj = jsonParser.parse(reader);
             JSONObject templateJson = (JSONObject) obj;
             return convertJsonToTemplate(templateJson);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException(e.getMessage());
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
         } catch (ParseException e) {
             throw new ParseException(1);
         }
